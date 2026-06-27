@@ -26,7 +26,7 @@ main{max-width:1080px;margin:0 auto;padding:22px 14px}
 input,textarea,select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:9px 12px;font-size:.86rem;width:100%;outline:none;transition:border .2s;font-family:inherit}
 input:focus,textarea:focus,select:focus{border-color:var(--acc)}
 label{font-size:.78rem;color:var(--text2);margin-bottom:4px;display:block}.fg{margin-bottom:12px}
-.btn{padding:9px 16px;border:none;border-radius:9px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+.btn{padding:9px 16px;border:none;border-radius:99px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
 .pr{background:var(--acc);color:#fff}.pr:hover{background:#6d28d9}
 .su{background:var(--acc3);color:#fff}.su:hover{background:#059669}
 .inf{background:var(--acc2);color:#000}.inf:hover{background:#0891b2}
@@ -34,7 +34,7 @@ label{font-size:.78rem;color:var(--text2);margin-bottom:4px;display:block}.fg{ma
 .dr{background:var(--red);color:#fff}
 .sm{padding:5px 11px;font-size:.76rem}.fw{width:100%;justify-content:center}
 .fi{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:var(--bg3);border-radius:9px;margin-bottom:7px;border:1px solid var(--border);gap:9px}
-.fn{font-weight:600;font-size:.86rem}.fm{font-size:.74rem;color:var(--text2);margin-top:2px}.fk{font-weight:800;color:var(--acc4);white-space:nowrap}
+.fn{font-weight:600;font-size:.86rem}html{scroll-behavior:smooth}.fm{font-size:.74rem;color:var(--text2);margin-top:2px}.fk{font-weight:800;color:var(--acc4);white-space:nowrap}
 .wd{border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-bottom:11px}
 .wh2{background:var(--bg3);padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
 .wh2:hover{background:#2a2a3a}.wb{padding:13px;display:none}.wb.on{display:block}
@@ -274,7 +274,12 @@ function go(id,btn){
   document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on')});
   document.getElementById('pg-'+id).classList.add('on');
   if(btn)btn.classList.add('on');
-  ({dash:rDash,nut:rNut,wo:rWo,hyd:rHyd,prof:rProf})[id]();
+  
+  if(id === 'dash') rDash();
+  else if(id === 'nut') rNut();
+  else if(id === 'wo') rWo();
+  else if(id === 'hyd') rHyd();
+  else if(id === 'prof') rProf();
 }
 
 function tdee(p){
@@ -391,7 +396,7 @@ function aef(){
   var id='ef'+Date.now();exfs.push(id);
   var c=document.getElementById('excon');var div=document.createElement('div');
   div.id=id;div.className='efcard';
-  div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><span style="font-weight:700;font-size:.85rem">Exercițiu #'+exfs.length+'</span><button class="btn dr sm" onclick="ref2(''+id+'')">&#x2715;</button></div><div class="fg"><label>Exercițiu</label><input id="'+id+'-n" placeholder="Ex: Bench Press, Squat, Deadlift, Pull-up..."/></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px"><div class="fg"><label>Seturi</label><input type="number" id="'+id+'-s" placeholder="4" min="1"/></div><div class="fg"><label>Repetări</label><input id="'+id+'-r" placeholder="8-12"/></div><div class="fg"><label>Greutate (kg)</label><input id="'+id+'-w" placeholder="60"/></div></div><div class="fg"><label>Note</label><input id="'+id+'-no" placeholder="Ex: RIR 2, superset, drop set..."/></div>';
+  div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><span style="font-weight:700;font-size:.85rem">Exercițiu #'+exfs.length+'</span><button class="btn dr sm" onclick="ref2(\''+id+'\')">&#x2715;</button></div><div class="fg"><label>Exercițiu</label><input id="'+id+'-n" placeholder="Ex: Bench Press, Squat, Deadlift, Pull-up..."/></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px"><div class="fg"><label>Seturi</label><input type="number" id="'+id+'-s" placeholder="4" min="1"/></div><div class="fg"><label>Repetări</label><input id="'+id+'-r" placeholder="8-12"/></div><div class="fg"><label>Greutate (kg)</label><input id="'+id+'-w" placeholder="60"/></div></div><div class="fg"><label>Note</label><input id="'+id+'-no" placeholder="Ex: RIR 2, superset, drop set..."/></div>';
   c.appendChild(div);
 }
 function ref2(id){var e=document.getElementById(id);if(e)e.remove();exfs=exfs.filter(function(x){return x!==id})}
@@ -422,7 +427,7 @@ function rWH(){
       return'<div class="ei"><div class="en">'+e.name+'</div><div class="ed">'+det+'</div>'+sets+'</div>';
     }).join('');
     var noteHtml=w.notes?'<div style="margin-top:7px;font-size:.82rem;color:var(--text2);font-style:italic;padding:8px;background:var(--bg2);border-radius:7px">📝 '+w.notes+'</div>':'';
-    return'<div class="wd"><div class="wh2" onclick="document.getElementById(''+did+'').classList.toggle('on')"><div><span style="font-weight:700">'+lbl+'</span><span class="badge bp" style="margin-left:7px">'+w.type.replace(/^[^—]+—s*/,'').replace(/^[^wăîâșț]*/,'')+'</span></div><span style="color:var(--text2);font-size:.8rem">'+w.exercises.length+' ex. ▾</span></div><div class="wb" id="'+did+'">'+exRows+noteHtml+'<button class="btn dr sm" style="margin-top:9px" onclick="dW(''+date+'')">🗑 Șterge</button></div></div>';
+    return'<div class="wd"><div class="wh2" onclick="document.getElementById(\''+did+'\').classList.toggle(\''+'on'+'\')"><div><span style="font-weight:700">'+lbl+'</span><span class="badge bp" style="margin-left:7px">'+w.type.replace(/^[^—]+—s*/,'').replace(/^[^wăîâșț]*/,'')+'</span></div><span style="color:var(--text2);font-size:.8rem">'+w.exercises.length+' ex. ▾</span></div><div class="wb" id="'+did+'">'+exRows+noteHtml+'<button class="btn dr sm" style="margin-top:9px" onclick="dW(\''+date+'\')">🗑 Șterge</button></div></div>';
   }).join('');
 }
 function dW(date){if(!confirm('Ștergi antrenamentul din '+date+'?'))return;if(S.days[date])S.days[date].workout=null;save();rWH()}
@@ -567,7 +572,7 @@ function rDash(){
   document.getElementById('drem').innerHTML=
     '<div style="margin-bottom:9px">'+(S.ron?'<span class="badge bb">● Remindere apă active</span>':'<span class="badge br">Remindere oprite</span>')+'</div>'+
     (sh||'<p style="font-size:.82rem;color:var(--text2)">Adaugă suplimente în tab-ul Hidratare.</p>')+
-    '<button class="btn gh sm mt" onclick="go('hyd',document.querySelectorAll('.nb')[3])">Gestionează →</button>';
+    '<button class="btn gh sm mt" onclick="go(\'hyd\',document.querySelectorAll(\'.nb\')[3])">Gestionează →</button>';
 }
 
 (function init(){
