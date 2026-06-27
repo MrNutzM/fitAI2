@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚡ FitAI — Fitness & Nutriție</title>
+<style>
+:root{--bg:#0f0f13;--bg2:#1a1a24;--bg3:#22222f;--acc:#7c3aed;--acc2:#06b6d4;--acc3:#10b981;--acc4:#f59e0b;--red:#ef4444;--text:#e2e8f0;--text2:#94a3b8;--border:#2d2d3d;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 14px;display:flex;align-items:center;gap:4px;height:58px;position:sticky;top:0;z-index:100;overflow-x:auto}
+.logo{font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:10px;white-space:nowrap;flex-shrink:0}
+.nb{background:none;border:none;color:var(--text2);cursor:pointer;padding:7px 12px;border-radius:8px;font-size:.8rem;font-weight:600;transition:all .2s;white-space:nowrap;flex-shrink:0;font-family:inherit}
+.nb:hover{background:var(--bg3);color:var(--text)}.nb.on{background:var(--acc);color:#fff}
+main{max-width:1080px;margin:0 auto;padding:22px 14px}
+.pg{display:none}.pg.on{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.ct{font-size:.9rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:620px){.g2,.g3{grid-template-columns:1fr}}
+.sbox{background:var(--bg3);border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border)}
+.sv{font-size:1.75rem;font-weight:800}.sl{font-size:.7rem;color:var(--text2);margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.pw{margin:7px 0}.pl{display:flex;justify-content:space-between;font-size:.78rem;color:var(--text2);margin-bottom:3px}
+.pb{height:8px;background:var(--bg3);border-radius:99px;overflow:hidden}.pf{height:100%;border-radius:99px;transition:width .5s}
+input,textarea,select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:9px 12px;font-size:.86rem;width:100%;outline:none;transition:border .2s;font-family:inherit}
+input:focus,textarea:focus,select:focus{border-color:var(--acc)}
+label{font-size:.78rem;color:var(--text2);margin-bottom:4px;display:block}.fg{margin-bottom:12px}
+.btn{padding:9px 16px;border:none;border-radius:9px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+.pr{background:var(--acc);color:#fff}.pr:hover{background:#6d28d9}
+.su{background:var(--acc3);color:#fff}.su:hover{background:#059669}
+.inf{background:var(--acc2);color:#000}.inf:hover{background:#0891b2}
+.gh{background:var(--bg3);color:var(--text);border:1px solid var(--border)}.gh:hover{border-color:var(--acc);color:var(--acc)}
+.dr{background:var(--red);color:#fff}
+.sm{padding:5px 11px;font-size:.76rem}.fw{width:100%;justify-content:center}
+.fi{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:var(--bg3);border-radius:9px;margin-bottom:7px;border:1px solid var(--border);gap:9px}
+.fn{font-weight:600;font-size:.86rem}.fm{font-size:.74rem;color:var(--text2);margin-top:2px}.fk{font-weight:800;color:var(--acc4);white-space:nowrap}
+.wd{border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-bottom:11px}
+.wh2{background:var(--bg3);padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.wh2:hover{background:#2a2a3a}.wb{padding:13px;display:none}.wb.on{display:block}
+.ei{background:var(--bg3);border-radius:9px;padding:11px;margin-bottom:7px;border-left:3px solid var(--acc)}
+.en{font-weight:700;font-size:.88rem}.ed{font-size:.78rem;color:var(--text2);margin-top:3px}
+.sr{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.sb{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:.74rem;color:var(--acc2)}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:.72rem;font-weight:700}
+.bg{background:rgba(16,185,129,.15);color:var(--acc3)}.bb{background:rgba(6,182,212,.15);color:var(--acc2)}
+.by{background:rgba(245,158,11,.15);color:var(--acc4)}.bp{background:rgba(124,58,237,.15);color:#a78bfa}
+.br{background:rgba(239,68,68,.15);color:var(--red)}
+.chat{display:flex;flex-direction:column;gap:9px;max-height:320px;overflow-y:auto;padding:3px}
+.cm{padding:10px 14px;border-radius:11px;max-width:92%;font-size:.85rem;line-height:1.55}
+.cm.u{background:var(--acc);color:#fff;align-self:flex-end;border-radius:11px 11px 3px 11px}
+.cm.b{background:var(--bg3);border:1px solid var(--border);align-self:flex-start;border-radius:11px 11px 11px 3px}
+.ci{display:flex;gap:7px;margin-top:9px}.ci input{flex:1}
+.wg{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0}
+.wc{width:42px;height:42px;border-radius:9px;border:2px solid var(--border);background:var(--bg3);cursor:pointer;font-size:1.25rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.wc.on{background:rgba(6,182,212,.22);border-color:var(--acc2)}.wc:hover{transform:scale(1.08)}
+.cbar{display:flex;align-items:flex-end;gap:7px;height:105px}
+.cc{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+.cb{width:100%;border-radius:5px 5px 0 0;transition:height .5s;min-height:3px}
+.cl{font-size:.66rem;color:var(--text2)}.cv{font-size:.66rem;font-weight:700}
+#notif{position:fixed;top:65px;right:14px;z-index:9999;background:var(--bg2);border:1px solid var(--acc);border-radius:13px;padding:13px 36px 13px 17px;max-width:290px;box-shadow:0 8px 30px rgba(124,58,237,.35);display:none;animation:sI .3s ease}
+@keyframes sI{from{transform:translateX(125%);opacity:0}to{transform:translateX(0);opacity:1}}
+.nt{font-weight:700;font-size:.88rem;margin-bottom:3px}.nb2{font-size:.78rem;color:var(--text2)}
+.nc{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:.9rem}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.sh{margin-bottom:18px}.sh h1{font-size:1.4rem;font-weight:800}.sh p{color:var(--text2);font-size:.84rem;margin-top:3px}
+textarea{resize:vertical;min-height:72px}
+.div2{border:none;border-top:1px solid var(--border);margin:13px 0}
+.fr{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.mt{margin-top:11px}
+.efcard{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:9px}
+.emp{text-align:center;padding:28px 16px;color:var(--text2);font-size:.87rem}
+.ei2{font-size:2.4rem;margin-bottom:9px}
+.mpill{background:var(--bg2);border-radius:7px;padding:7px;text-align:center}
+.mv{font-size:1.05rem;font-weight:800}.ml2{font-size:.68rem;color:var(--text2);margin-top:2px}
+.tdbox{background:var(--bg3);border-radius:9px;padding:13px;border:1px solid var(--border);margin-top:13px}
+</style>
+</head>
+<body>
+<div id="notif">
+  <button class="nc" onclick="closeN()">✕</button>
+  <div class="nt" id="ntit">💧 Hidratare</div>
+  <div class="nb2" id="nbod">Bea un pahar cu apă!</div>
+</div>
+<nav>
+  <span class="logo">⚡ FitAI</span>
+  <button class="nb on"  onclick="go('dash',this)">🏠 Dashboard</button>
+  <button class="nb"     onclick="go('nut',this)">🥗 Nutriție</button>
+  <button class="nb"     onclick="go('wo',this)">💪 Antrenament</button>
+  <button class="nb"     onclick="go('hyd',this)">💧 Hidratare</button>
+  <button class="nb"     onclick="go('prof',this)">⚙️ Profil</button>
+</nav>
+<main>
+
+<!-- DASHBOARD -->
+<div id="pg-dash" class="pg on">
+  <div class="sh"><h1 id="dg">Bună! 👋</h1><p id="dd"></p></div>
+  <div id="dstats" class="g3" style="margin-bottom:14px"></div>
+  <div class="g2">
+    <div class="card"><div class="ct">🔥 Macros azi</div><div id="dmac"></div></div>
+    <div class="card"><div class="ct">📅 Antrenamente săptămâna aceasta</div><div id="dwk"></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct">💧 Hidratare azi</div><div id="dwat"></div></div>
+    <div class="card"><div class="ct">⏰ Suplimente &amp; Remindere</div><div id="drem"></div></div>
+  </div>
+  <div class="card">
+    <div class="ct">🤖 AI Asistent — întreabă orice</div>
+    <div class="chat" id="qchat"><div class="cm b">Salut! Sunt asistentul tău FitAI 💪 Poți să mă întrebi despre calorii, proteine, antrenamente, hidratare, suplimente sau orice legat de fitness-ul tău. Cum te pot ajuta?</div></div>
+    <div class="ci"><input id="qi" placeholder="Ex: Câte calorii am azi? Ce mănânc pentru masă musculară?" onkeydown="if(event.key==='Enter')sc('q')"/><button class="btn pr" onclick="sc('q')">↵ Trimite</button></div>
+  </div>
+</div>
+
+<!-- NUTRIȚIE -->
+<div id="pg-nut" class="pg">
+  <div class="sh"><h1>🥗 Jurnal Nutrițional</h1><p>Descrie ce ai mâncat — AI-ul calculează automat valorile nutriționale</p></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">➕ Adaugă cu AI</div>
+      <div class="fg"><label>Ce ai mâncat? (cu cantități)</label><textarea id="fi" placeholder="Ex: 150g piept de pui, 100g orez fiert, 2 ouă, 200ml lapte"></textarea></div>
+      <div class="fg"><label>Masă</label>
+        <select id="ms"><option>🌅 Mic dejun</option><option>☀️ Prânz</option><option>🌙 Cină</option><option>🍎 Gustare</option><option>⚡ Pre-workout</option><option>🥤 Post-workout</option></select>
+      </div>
+      <button class="btn pr fw" onclick="af()">🤖 Analizează cu AI</button>
+      <div id="fa" style="margin-top:13px"></div>
+    </div>
+    <div class="card">
+      <div class="ct">📊 Sumar zilnic</div>
+      <div id="ns"></div>
+      <hr class="div2"/>
+      <div class="ct" style="margin-top:3px">🤖 Sfat AI</div>
+      <div id="ntip" style="font-size:.82rem;color:var(--text2);line-height:1.55"></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">🍽️ Alimente înregistrate azi</div><div id="fl"></div></div>
+  <div class="card">
+    <div class="ct">🤖 Chat nutrițional AI</div>
+    <div class="chat" id="nchat"></div>
+    <div class="ci"><input id="ni" placeholder="Ex: Am destule proteine? Ce adaug la cină?" onkeydown="if(event.key==='Enter')sc('n')"/><button class="btn pr" onclick="sc('n')">↵ Trimite</button></div>
+  </div>
+</div>
+
+<!-- ANTRENAMENT -->
+<div id="pg-wo" class="pg">
+  <div class="sh"><h1>💪 Jurnal Antrenament</h1><p>Înregistrează fiecare sesiune și urmărește progresul</p></div>
+  <div class="card">
+    <div class="ct">➕ Antrenament nou</div>
+    <div class="g2">
+      <div class="fg"><label>Data</label><input type="date" id="wdate"/></div>
+      <div class="fg"><label>Tip antrenament</label>
+        <select id="wtype">
+          <option>💪 Push — Piept, Umeri, Triceps</option><option>🔙 Pull — Spate, Biceps</option>
+          <option>🦵 Legs — Picioare</option><option>🏋️ Full Body</option>
+          <option>🏃 Cardio</option><option>⬆️ Upper Body</option>
+          <option>🎯 Core &amp; Abs</option><option>✏️ Altul</option>
+        </select>
+      </div>
+    </div>
+    <div id="excon"></div>
+    <button class="btn gh sm" onclick="aef()" style="margin-bottom:13px">+ Adaugă exercițiu</button>
+    <hr class="div2"/>
+    <div class="fg"><label>📝 Note antrenament</label><textarea id="wnotes" placeholder="Energie, pompă, greutăți noi, observații..."></textarea></div>
+    <button class="btn su fw" onclick="sw2()">💾 Salvează antrenament</button>
+    <span id="wsaved" class="badge bg" style="display:none;margin-left:11px;padding:8px">✓ Salvat!</span>
+  </div>
+  <div class="card"><div class="ct">📋 Istoric antrenamente</div><div id="whist"></div></div>
+</div>
+
+<!-- HIDRATARE -->
+<div id="pg-hyd" class="pg">
+  <div class="sh"><h1>💧 Hidratare &amp; Suplimente</h1><p>Urmărește consumul de apă și ia-ți suplimentele</p></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">💧 Apă azi</div>
+      <div style="text-align:center;margin-bottom:13px">
+        <div class="sv" id="wbig" style="color:var(--acc2)">0</div>
+        <div class="sl">pahare din <span id="wglbl">8</span> (obiectiv)</div>
+      </div>
+      <div class="wg" id="wcups"></div>
+      <div style="margin-top:10px;font-size:.8rem;color:var(--text2);text-align:center"><span id="wml">0</span>ml din <span id="wmlg">2000</span>ml recomandate</div>
+      <div class="fr mt"><button class="btn inf" onclick="aw()">+ 1 pahar (250ml)</button><button class="btn gh sm" onclick="rw()">↺ Reset</button></div>
+    </div>
+    <div class="card">
+      <div class="ct">💊 Suplimentele mele</div>
+      <div id="slist"></div>
+      <hr class="div2"/>
+      <div class="ct">➕ Adaugă supliment</div>
+      <div class="fg"><label>Denumire</label><input id="sn" placeholder="Ex: Creatină, Vitamina D, ZMA, Omega 3..."/></div>
+      <div class="g2">
+        <div class="fg"><label>Oră reminder</label><input type="time" id="st" value="08:00"/></div>
+        <div class="fg"><label>Doză</label><input id="sd" placeholder="Ex: 5g, 1 caps"/></div>
+      </div>
+      <button class="btn pr fw" onclick="as2()">Adaugă supliment</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">⏰ Remindere automate</div>
+    <div class="g2">
+      <div class="fg"><label>Interval reminder apă</label>
+        <select id="wint"><option value="30">La 30 minute</option><option value="45">La 45 minute</option><option value="60" selected>La 1 oră</option><option value="90">La 90 minute</option><option value="120">La 2 ore</option></select>
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:12px;gap:9px">
+        <button class="btn inf" onclick="startR()">▶ Pornește</button>
+        <button class="btn gh" onclick="stopR()">⏹ Oprește</button>
+        <span id="rbadge" class="badge bb" style="display:none">● Activ</span>
+      </div>
+    </div>
+    <p style="font-size:.8rem;color:var(--text2)">💡 Permite notificările browserului pentru alerte chiar și pe alte tab-uri.</p>
+  </div>
+</div>
+
+<!-- PROFIL -->
+<div id="pg-prof" class="pg">
+  <div class="sh"><h1>⚙️ Profil &amp; Obiective</h1><p>Date personale pentru calcule TDEE precise și personalizate</p></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">👤 Date personale</div>
+      <div class="fg"><label>Nume</label><input id="pn" placeholder="Numele tău"/></div>
+      <div class="g2">
+        <div class="fg"><label>Vârstă (ani)</label><input type="number" id="pa" placeholder="25" min="10" max="99"/></div>
+        <div class="fg"><label>Sex</label><select id="pgdr"><option value="m">Masculin</option><option value="f">Feminin</option></select></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Greutate (kg)</label><input type="number" id="pw" placeholder="80" min="30" max="300"/></div>
+        <div class="fg"><label>Înălțime (cm)</label><input type="number" id="ph" placeholder="180" min="100" max="250"/></div>
+      </div>
+      <div class="fg"><label>Nivel activitate</label>
+        <select id="pact">
+          <option value="1.2">Sedentar — fără sport</option>
+          <option value="1.375">Ușor activ — 1-2x/săpt</option>
+          <option value="1.55" selected>Moderat activ — 3-4x/săpt</option>
+          <option value="1.725">Foarte activ — 5-6x/săpt</option>
+          <option value="1.9">Extrem — antrenament 2x/zi</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">🎯 Obiective fitness</div>
+      <div class="fg"><label>Goal principal</label>
+        <select id="pgoal">
+          <option value="bulk">💪 Masă musculară (Bulk)</option>
+          <option value="cut">🔥 Slăbit / Definire (Cut)</option>
+          <option value="maintain">⚖️ Menținere</option>
+          <option value="recomp">🔄 Recompoziție corporală</option>
+        </select>
+      </div>
+      <div class="fg"><label>Obiectiv antrenamente (zile/săptămână)</label>
+        <select id="pgd">
+          <option value="2">2 zile/săptămână</option><option value="3">3 zile/săptămână</option>
+          <option value="4" selected>4 zile/săptămână</option><option value="5">5 zile/săptămână</option>
+          <option value="6">6 zile/săptămână</option>
+        </select>
+      </div>
+      <div class="fg"><label>Obiectiv apă zilnic (pahare × 250ml)</label><input type="number" id="pwg" value="8" min="4" max="20"/></div>
+      <div id="tdeer"></div>
+    </div>
+  </div>
+  <button class="btn pr" onclick="sp()">💾 Salvează profil</button>
+  <span id="pok" class="badge bg" style="display:none;margin-left:11px;padding:8px">✓ Salvat!</span>
+</div>
+
+</main>
+<script>
+var S=JSON.parse(localStorage.getItem('fitai3')||'null')||{
+  profile:{name:'',age:25,gender:'m',weight:80,height:180,activity:1.55,goal:'bulk',gymDays:4,waterGoal:8},
+  days:{},supps:[{name:'Creatin\u0103',time:'09:00',dose:'5g',taken:false}],wint:60,ron:false
+};
+var rtimer=null,stmrs=[],exfs=[];
+function save(){localStorage.setItem('fitai3',JSON.stringify(S))}
+function today(){return new Date().toISOString().split('T')[0]}
+function gd(k){if(!S.days[k])S.days[k]={foods:[],workout:null,water:0};return S.days[k]}
+
+function go(id,btn){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on')});
+  document.getElementById('pg-'+id).classList.add('on');
+  if(btn)btn.classList.add('on');
+  ({dash:rDash,nut:rNut,wo:rWo,hyd:rHyd,prof:rProf})[id]();
+}
+
+function tdee(p){
+  var bmr=p.gender==='m'?10*p.weight+6.25*p.height-5*p.age+5:10*p.weight+6.25*p.height-5*p.age-161;
+  var base=Math.round(bmr*p.activity);
+  var tgt={bulk:base+300,cut:base-400,maintain:base,recomp:base-100}[p.goal]||base;
+  var r={bulk:{c:.4,pr:.3,f:.3},cut:{c:.3,pr:.4,f:.3},maintain:{c:.4,pr:.3,f:.3},recomp:{c:.35,pr:.35,f:.3}}[p.goal]||{c:.4,pr:.3,f:.3};
+  return{bmr:Math.round(bmr),base:base,tgt:tgt,protein:Math.round(tgt*r.pr/4),carbs:Math.round(tgt*r.c/4),fat:Math.round(tgt*r.f/9)};
+}
+
+function rProf(){
+  var p=S.profile;
+  [['pn',p.name],['pa',p.age],['pgdr',p.gender],['pw',p.weight],['ph',p.height],['pact',p.activity],['pgoal',p.goal],['pgd',p.gymDays],['pwg',p.waterGoal]].forEach(function(x){var e=document.getElementById(x[0]);if(e)e.value=x[1]!=null?x[1]:''});
+  rTDEE();
+}
+function sp(){
+  S.profile={name:document.getElementById('pn').value.trim(),age:+document.getElementById('pa').value||25,gender:document.getElementById('pgdr').value,weight:+document.getElementById('pw').value||80,height:+document.getElementById('ph').value||180,activity:+document.getElementById('pact').value||1.55,goal:document.getElementById('pgoal').value,gymDays:+document.getElementById('pgd').value||4,waterGoal:+document.getElementById('pwg').value||8};
+  save();rTDEE();
+  var ok=document.getElementById('pok');ok.style.display='inline-block';setTimeout(function(){ok.style.display='none'},2400);
+}
+function rTDEE(){
+  var t=tdee(S.profile);
+  var gn={bulk:'Mas\u0103 muscular\u0103',cut:'Sl\u0103bit',maintain:'Men\u021binere',recomp:'Recompozi\u021bie'}[S.profile.goal]||S.profile.goal;
+  document.getElementById('tdeer').innerHTML='<div class="tdbox"><div style="font-weight:700;color:var(--acc2);margin-bottom:9px">📊 Calculele tale</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:.82rem;margin-bottom:11px"><div>BMR: <strong>'+t.bmr+' kcal</strong></div><div>TDEE: <strong>'+t.base+' kcal</strong></div><div style="grid-column:1/-1">🎯 Target ('+gn+'): <strong style="color:var(--acc4)">'+t.tgt+' kcal/zi</strong></div><div>💧 Ap\u0103: <strong>'+(S.profile.weight*.033).toFixed(1)+'L/zi</strong></div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px"><div class="mpill"><div class="mv" style="color:#60a5fa">'+t.protein+'g</div><div class="ml2">Proteine</div></div><div class="mpill"><div class="mv" style="color:var(--acc4)">'+t.carbs+'g</div><div class="ml2">Carbs</div></div><div class="mpill"><div class="mv" style="color:var(--acc3)">'+t.fat+'g</div><div class="ml2">Gr\u0103simi</div></div></div></div>';
+}
+
+var FDB={'piept de pui':{p:31,c:0,f:3.6,k:165},'pui':{p:27,c:0,f:5,k:165},'carne de pui':{p:27,c:0,f:5,k:165},'piept curcan':{p:29,c:0,f:1,k:135},'curcan':{p:29,c:0,f:1,k:135},'ton la conserva':{p:26,c:0,f:1,k:116},'ton':{p:26,c:0,f:1,k:116},'somon':{p:20,c:0,f:13,k:208},'pastrav':{p:19,c:0,f:6,k:128},'ou':{p:13,c:1,f:11,k:155},'oua':{p:13,c:1,f:11,k:155},'ochiuri':{p:13,c:1,f:11,k:155},'orez fiert':{p:2.7,c:28,f:.3,k:130},'orez':{p:2.7,c:28,f:.3,k:130},'paste fierte':{p:5,c:25,f:1,k:131},'paste':{p:5,c:25,f:1,k:131},'cartofi fierti':{p:2,c:17,f:.1,k:77},'cartofi':{p:2,c:17,f:.1,k:77},'cartofi copti':{p:2.5,c:20,f:.1,k:93},'branza de vaci':{p:11,c:3,f:1,k:65},'branza cottage':{p:11,c:3,f:1,k:65},'branza':{p:11,c:3,f:1,k:65},'iaurt grecesc':{p:10,c:4,f:.4,k:59},'iaurt':{p:6,c:5,f:3,k:61},'lapte':{p:3.4,c:5,f:3.6,k:61},'lapte degresat':{p:3.5,c:5,f:.1,k:35},'ovaz':{p:13,c:67,f:7,k:389},'fulgi de ovaz':{p:13,c:67,f:7,k:389},'paine':{p:9,c:49,f:3,k:265},'paine neagra':{p:8,c:41,f:1,k:250},'paine integrala':{p:8,c:44,f:2,k:247},'banana':{p:1.1,c:23,f:.3,k:89},'mar':{p:.3,c:14,f:.2,k:52},'portocala':{p:1,c:12,f:.2,k:47},'avocado':{p:2,c:9,f:15,k:160},'spanac':{p:2.9,c:3.6,f:.4,k:23},'brocoli':{p:2.8,c:7,f:.4,k:34},'rosii':{p:.9,c:4,f:.2,k:18},'castravete':{p:.6,c:3.6,f:.1,k:16},'cascaval':{p:25,c:1,f:33,k:400},'parmezan':{p:32,c:3,f:29,k:431},'unt':{p:.9,c:.1,f:81,k:717},'ulei':{p:0,c:0,f:100,k:884},'ulei masline':{p:0,c:0,f:100,k:884},'nuci':{p:15,c:14,f:65,k:654},'migdale':{p:21,c:22,f:50,k:579},'unt de arahide':{p:25,c:20,f:50,k:588},'whey':{p:75,c:10,f:3,k:370},'proteina':{p:75,c:10,f:3,k:370},'protein shake':{p:25,c:5,f:2,k:130},'carne de vita':{p:26,c:0,f:20,k:290},'vita':{p:26,c:0,f:20,k:290},'porc':{p:25,c:0,f:21,k:297},'cotlet de porc':{p:26,c:0,f:15,k:260},'fasole':{p:9,c:23,f:.4,k:127},'linte':{p:9,c:20,f:.4,k:116},'naut':{p:9,c:27,f:3,k:164},'quinoa':{p:4.4,c:22,f:1.9,k:120},'orez brun':{p:2.6,c:23,f:.9,k:111},'ciocolata neagra':{p:5,c:46,f:31,k:546},'miere':{p:.3,c:82,f:0,k:304}};
+
+function bmatch(food){
+  var best=null,sc=0;
+  var keys=Object.keys(FDB);
+  for(var i=0;i<keys.length;i++){var k=keys[i];var v=FDB[k];var kw=k.split(' ');var s=kw.filter(function(w){return food.indexOf(w)>=0}).length*2+food.split(' ').filter(function(w){return k.indexOf(w)>=0}).length;if(s>sc){sc=s;best={k:k,v:v}}}
+  return sc>0?best:null;
+}
+
+function parseFoods(txt){
+  var low=txt.toLowerCase().replace(/[,;]/g,' ').replace(/s+/g,' ');
+  var res=[];var seen={};
+  var re=/(d+(?:[.,]d+)?)s*(?:g|gr|grame|ml)s+(?:des+)?([a-zăîâșțs]{2,28}?)(?=d|$|s{2,})/gi;
+  var m;
+  while((m=re.exec(low))!==null){
+    var qty=parseFloat(m[1].replace(',','.'));var food=m[2].trim().replace(/s+$/,'');
+    if(seen[food])continue;seen[food]=1;
+    var match=bmatch(food);var f=qty/100;
+    if(match){var v=match.v;res.push({name:food,qty:qty,protein:+(v.p*f).toFixed(1),carbs:+(v.c*f).toFixed(1),fat:+(v.f*f).toFixed(1),kcal:Math.round(v.k*f),matched:match.k})}
+    else{res.push({name:food,qty:qty,protein:+(15*f).toFixed(1),carbs:+(18*f).toFixed(1),fat:+(6*f).toFixed(1),kcal:Math.round(205*f),estimated:true})}
+  }
+  var re2=/(d+)s+ou[aăâ]/gi;
+  while((m=re2.exec(low))!==null){
+    if(!res.some(function(r){return r.name.indexOf('ou')>=0})){
+      var n=+m[1],qty2=n*60,f2=qty2/100,v2=FDB['ou'];
+      res.push({name:n+' ouă',qty:qty2,protein:+(v2.p*f2).toFixed(1),carbs:+(v2.c*f2).toFixed(1),fat:+(v2.f*f2).toFixed(1),kcal:Math.round(v2.k*f2),matched:'ou'})
+    }
+  }
+  return res;
+}
+
+function aiFood(txt){
+  var items=parseFoods(txt);
+  if(!items.length)return{items:[],msg:'Nu am detectat alimente cu cantități. Încercă: <em>"150g piept de pui, 100g orez, 2 ouă"</em>'};
+  var tot=items.reduce(function(a,i){return{p:a.p+i.protein,c:a.c+i.carbs,f:a.f+i.fat,k:a.k+i.kcal}},{p:0,c:0,f:0,k:0});
+  var t=tdee(S.profile);var pct=Math.round(tot.k/t.tgt*100);
+  var tip='';
+  if(tot.protein<tot.k*.27/4)tip=' ⚠️ Proteine scăzute — adaugă o sursă proteică.';
+  else if(S.profile.goal==='bulk'&&tot.k>t.tgt*.35)tip=' ✅ Masă bogată, bună pentru bulk!';
+  else if(S.profile.goal==='cut'&&tot.k<500)tip=' ✅ Masă light, potrivită pentru cut!';
+  else tip=' ✅ Compoziție echilibrată.';
+  return{items:items,total:tot,msg:'Detectat <strong>'+items.length+' aliment(e)</strong> · <strong>'+Math.round(tot.k)+' kcal</strong> ('+pct+'% din target '+t.tgt+' kcal).'+tip};
+}
+
+function af(){
+  var inp=document.getElementById('fi').value.trim();
+  if(!inp){alert('Descrie ce ai mâncat!');return}
+  var meal=document.getElementById('ms').value;var r=aiFood(inp);var div=document.getElementById('fa');
+  if(!r.items.length){div.innerHTML='<div style="color:var(--acc4);padding:10px;background:var(--bg3);border-radius:8px;font-size:.83rem">'+r.msg+'</div>';return}
+  div._d={r:r,meal:meal,inp:inp};
+  var rows=r.items.map(function(i){return'<div style="display:flex;justify-content:space-between;font-size:.79rem;padding:4px 0;border-bottom:1px solid var(--border)"><span>'+i.name+(i.estimated?' <span style="color:var(--acc4);font-size:.7rem">(est.)</span>':'')+'</span><span style="color:var(--text2)">'+i.protein+'g P · '+i.carbs+'g C · '+i.fat+'g G · <strong style="color:var(--acc4)">'+i.kcal+'kcal</strong></span></div>'}).join('');
+  div.innerHTML='<div style="background:var(--bg3);border-radius:9px;padding:13px;border:1px solid var(--border)"><div style="margin-bottom:9px;font-size:.83rem">'+r.msg+'</div>'+rows+'<div style="display:flex;justify-content:space-between;font-weight:700;font-size:.83rem;padding:7px 0 3px"><span>TOTAL</span><span>'+r.total.p.toFixed(1)+'g P · '+r.total.c.toFixed(1)+'g C · '+r.total.f.toFixed(1)+'g G · <span style="color:var(--acc4)">'+Math.round(r.total.k)+'kcal</span></span></div><button class="btn su sm mt" onclick="cf()">✓ Adaugă în jurnal</button></div>';
+}
+
+function cf(){
+  var div=document.getElementById('fa');if(!div._d)return;
+  var r=div._d.r,meal=div._d.meal,inp=div._d.inp;
+  var d=gd(today());
+  d.foods.push({meal:meal,desc:inp,items:r.items,total:r.total,time:new Date().toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'})});
+  save();document.getElementById('fi').value='';div.innerHTML='<div class="badge bg" style="padding:9px">✓ Adăugat!</div>';div._d=null;rNut();
+}
+
+function rFL(){
+  var d=gd(today());var el=document.getElementById('fl');
+  if(!d.foods.length){el.innerHTML='<div class="emp"><div class="ei2">🍽️</div>Nu ai înregistrat nimic azi. Adaugă prima masă!</div>';return}
+  el.innerHTML=d.foods.map(function(f,i){return'<div class="fi"><div style="flex:1;min-width:0"><div class="fn">'+f.meal+' · '+f.time+'</div><div class="fm">'+(f.desc.length>55?f.desc.slice(0,55)+'…':f.desc)+'</div><div class="fm">'+f.total.p.toFixed(1)+'g P · '+f.total.c.toFixed(1)+'g C · '+f.total.f.toFixed(1)+'g G</div></div><div style="display:flex;align-items:center;gap:7px;flex-shrink:0"><span class="fk">'+Math.round(f.total.k)+' kcal</span><button class="btn gh sm" onclick="rF('+i+')">🗑</button></div></div>'}).join('');
+}
+function rF(i){gd(today()).foods.splice(i,1);save();rNut()}
+
+function rNS(){
+  var d=gd(today());var tot=d.foods.reduce(function(a,f){return{p:a.p+f.total.p,c:a.c+f.total.c,f:a.f+f.total.f,k:a.k+f.total.k}},{p:0,c:0,f:0,k:0});
+  var t=tdee(S.profile);var p=function(v){return Math.min(100,Math.round(v))};
+  document.getElementById('ns').innerHTML=
+    '<div class="pw"><div class="pl"><span>🔥 Calorii</span><span>'+Math.round(tot.k)+' / '+t.tgt+' kcal</span></div><div class="pb"><div class="pf" style="width:'+p(tot.k/t.tgt*100)+'%;background:var(--acc4)"></div></div></div>'+
+    '<div class="pw"><div class="pl"><span>💪 Proteine</span><span>'+tot.p.toFixed(1)+' / '+t.protein+'g</span></div><div class="pb"><div class="pf" style="width:'+p(tot.p/t.protein*100)+'%;background:#60a5fa"></div></div></div>'+
+    '<div class="pw"><div class="pl"><span>🌾 Carbohidrați</span><span>'+tot.c.toFixed(1)+' / '+t.carbs+'g</span></div><div class="pb"><div class="pf" style="width:'+p(tot.c/t.carbs*100)+'%;background:var(--acc4)"></div></div></div>'+
+    '<div class="pw"><div class="pl"><span>🥑 Grăsimi</span><span>'+tot.f.toFixed(1)+' / '+t.fat+'g</span></div><div class="pb"><div class="pf" style="width:'+p(tot.f/t.fat*100)+'%;background:var(--acc3)"></div></div></div>'+
+    '<div style="margin-top:11px;display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:.8rem"><div style="background:var(--bg3);border-radius:7px;padding:7px;text-align:center">Rămase<br><strong style="color:var(--acc4)">'+Math.max(0,t.tgt-Math.round(tot.k))+' kcal</strong></div><div style="background:var(--bg3);border-radius:7px;padding:7px;text-align:center">Proteine rămase<br><strong style="color:#60a5fa">'+Math.max(0,t.protein-Math.round(tot.p))+'g</strong></div></div>';
+  var rem=Math.max(0,t.tgt-Math.round(tot.k)),remP=Math.max(0,t.protein-tot.p);
+  var tip=rem>800?'Ai '+rem+' kcal şi '+remP.toFixed(0)+'g proteine rămase. Asigură-te că mai ai cel puțin 2 mese.':rem>300?'Aproape la target! '+rem+' kcal rămase. O gustare bogată în proteine ar fi ideală.':rem>0?'Eşti foarte aproape de target zilnic. Hidratează-te bine!':'✅ Target caloric atins! Felicitări!';
+  document.getElementById('ntip').textContent=tip;
+}
+function rNut(){rFL();rNS()}
+
+function rWo(){document.getElementById('wdate').value=today();if(!exfs.length)aef();rWH()}
+
+function aef(){
+  var id='ef'+Date.now();exfs.push(id);
+  var c=document.getElementById('excon');var div=document.createElement('div');
+  div.id=id;div.className='efcard';
+  div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><span style="font-weight:700;font-size:.85rem">Exercițiu #'+exfs.length+'</span><button class="btn dr sm" onclick="ref2(''+id+'')">&#x2715;</button></div><div class="fg"><label>Exercițiu</label><input id="'+id+'-n" placeholder="Ex: Bench Press, Squat, Deadlift, Pull-up..."/></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px"><div class="fg"><label>Seturi</label><input type="number" id="'+id+'-s" placeholder="4" min="1"/></div><div class="fg"><label>Repetări</label><input id="'+id+'-r" placeholder="8-12"/></div><div class="fg"><label>Greutate (kg)</label><input id="'+id+'-w" placeholder="60"/></div></div><div class="fg"><label>Note</label><input id="'+id+'-no" placeholder="Ex: RIR 2, superset, drop set..."/></div>';
+  c.appendChild(div);
+}
+function ref2(id){var e=document.getElementById(id);if(e)e.remove();exfs=exfs.filter(function(x){return x!==id})}
+
+function sw2(){
+  var date=document.getElementById('wdate').value;if(!date){alert('Selectează o dată!');return}
+  var type=document.getElementById('wtype').value;var notes=document.getElementById('wnotes').value.trim();
+  var exs=exfs.map(function(id){return{name:(document.getElementById(id+'-n')||{}).value||'',sets:(document.getElementById(id+'-s')||{}).value||'',reps:(document.getElementById(id+'-r')||{}).value||'',weight:(document.getElementById(id+'-w')||{}).value||'',note:(document.getElementById(id+'-no')||{}).value||''}}).filter(function(e){return e.name.trim()});
+  if(!exs.length){alert('Adaugă cel puțin un exercițiu!');return}
+  gd(date).workout={type:type,exercises:exs,notes:notes,at:new Date().toISOString()};save();
+  document.getElementById('excon').innerHTML='';exfs=[];document.getElementById('wnotes').value='';aef();
+  var wm=document.getElementById('wsaved');wm.style.display='inline-block';setTimeout(function(){wm.style.display='none'},2400);
+  showN('💪 Antrenament salvat!',type.replace(/^.+—s*/,'')+' · '+exs.length+' exerciții înregistrate.');
+  rWH();
+}
+
+function rWH(){
+  var el=document.getElementById('whist');
+  var entries=Object.keys(S.days).filter(function(k){return S.days[k].workout}).sort(function(a,b){return b.localeCompare(a)}).slice(0,25);
+  if(!entries.length){el.innerHTML='<div class="emp"><div class="ei2">🏋️</div>Niciun antrenament înregistrat. Adaugă primul!</div>';return}
+  el.innerHTML=entries.map(function(date){
+    var w=S.days[date].workout;
+    var lbl=new Date(date+'T12:00:00').toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    var did='wh'+date.replace(/-/g,'');
+    var exRows=w.exercises.map(function(e){
+      var det=[e.sets&&e.sets+' seturi',e.reps&&'× '+e.reps+' rep',e.weight&&'@ '+e.weight+'kg',e.note].filter(Boolean).join(' · ');
+      var sets=e.sets?'<div class="sr">'+Array.from({length:+e.sets||1},function(_,i){return'<span class="sb">Set '+(i+1)+'</span>'}).join('')+'</div>':'';
+      return'<div class="ei"><div class="en">'+e.name+'</div><div class="ed">'+det+'</div>'+sets+'</div>';
+    }).join('');
+    var noteHtml=w.notes?'<div style="margin-top:7px;font-size:.82rem;color:var(--text2);font-style:italic;padding:8px;background:var(--bg2);border-radius:7px">📝 '+w.notes+'</div>':'';
+    return'<div class="wd"><div class="wh2" onclick="document.getElementById(''+did+'').classList.toggle('on')"><div><span style="font-weight:700">'+lbl+'</span><span class="badge bp" style="margin-left:7px">'+w.type.replace(/^[^—]+—s*/,'').replace(/^[^wăîâșț]*/,'')+'</span></div><span style="color:var(--text2);font-size:.8rem">'+w.exercises.length+' ex. ▾</span></div><div class="wb" id="'+did+'">'+exRows+noteHtml+'<button class="btn dr sm" style="margin-top:9px" onclick="dW(''+date+'')">🗑 Șterge</button></div></div>';
+  }).join('');
+}
+function dW(date){if(!confirm('Ștergi antrenamentul din '+date+'?'))return;if(S.days[date])S.days[date].workout=null;save();rWH()}
+
+function rHyd(){
+  var d=gd(today()),g=S.profile.waterGoal||8;
+  document.getElementById('wbig').textContent=d.water||0;
+  document.getElementById('wglbl').textContent=g;
+  document.getElementById('wml').textContent=(d.water||0)*250;
+  document.getElementById('wmlg').textContent=Math.round(S.profile.weight*.033*1000/250)*250;
+  document.getElementById('wint').value=S.wint||60;
+  document.getElementById('rbadge').style.display=S.ron?'inline-block':'none';
+  rWC();rSL();
+}
+function rWC(){
+  var d=gd(today()),g=S.profile.waterGoal||8,n=d.water||0;
+  document.getElementById('wcups').innerHTML=Array.from({length:g},function(_,i){return'<div class="wc'+(i<n?' on':'')+'" onclick="sW('+(i+1)+')" title="'+(i+1)*250+'ml">'+(i<n?'💧':'🪴')+'</div>'}).join('');
+}
+function aw(){var d=gd(today()),g=S.profile.waterGoal||8;if((d.water||0)<g){d.water=(d.water||0)+1;save();rHyd()}}
+function rw(){gd(today()).water=0;save();rHyd()}
+function sW(n){gd(today()).water=n;save();rHyd()}
+
+function rSL(){
+  var el=document.getElementById('slist');
+  if(!S.supps.length){el.innerHTML='<p style="color:var(--text2);font-size:.83rem">Niciun supliment adăugat.</p>';return}
+  el.innerHTML=S.supps.map(function(s,i){return'<div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--bg3);border-radius:9px;margin-bottom:7px;border:1px solid var(--border)"><div><div style="font-weight:700;font-size:.86rem">'+s.name+' <span style="color:var(--text2);font-weight:400">'+(s.dose||'')+'</span></div><div style="font-size:.75rem;color:var(--text2)">⏰ '+s.time+'</div></div><div style="display:flex;gap:7px;align-items:center"><button class="btn sm '+(s.taken?'gh':'su')+'" onclick="tS('+i+')">'+(s.taken?'✓ Luat':'Marchează')+'</button><button class="btn gh sm" onclick="dS('+i+')">✕</button></div></div>'}).join('');
+}
+function as2(){
+  var name=document.getElementById('sn').value.trim();if(!name){alert('Introdu denumirea!');return}
+  S.supps.push({name:name,time:document.getElementById('st').value,dose:document.getElementById('sd').value,taken:false});
+  document.getElementById('sn').value='';document.getElementById('sd').value='';
+  save();rSL();sched();
+}
+function dS(i){S.supps.splice(i,1);save();rSL()}
+function tS(i){S.supps[i].taken=!S.supps[i].taken;save();rSL()}
+
+function startR(){
+  stopR();var mins=parseInt(document.getElementById('wint').value)||60;
+  S.wint=mins;S.ron=true;save();
+  rtimer=setInterval(function(){var d=gd(today()),g=S.profile.waterGoal||8;if((d.water||0)<g)showN('💧 Bea apă!','Ai băut '+(d.water||0)+'/'+g+' pahare azi. Ia un pahar acum!');},mins*60000);
+  document.getElementById('rbadge').style.display='inline-block';
+  showN('✅ Remindere pornite','Vei fi notificat la fiecare '+mins+' minute.');
+  sched();
+}
+function stopR(){
+  if(rtimer){clearInterval(rtimer);rtimer=null}
+  stmrs.forEach(function(t){clearTimeout(t)});stmrs=[];
+  S.ron=false;save();document.getElementById('rbadge').style.display='none';
+}
+function sched(){
+  stmrs.forEach(function(t){clearTimeout(t)});stmrs=[];
+  var now=new Date();
+  S.supps.forEach(function(s){
+    if(s.taken)return;
+    var parts=(s.time||'08:00').split(':');var h=+parts[0],m=+parts[1];
+    var target=new Date();target.setHours(h,m,0,0);
+    var diff=target-now;if(diff<0)diff+=86400000;
+    if(diff<14400000)stmrs.push(setTimeout(function(){showN('💊 '+s.name,'E timpul pentru '+s.name+(s.dose?' ('+s.dose+')':'')+'!')},diff));
+  });
+}
+
+var nhide;
+function showN(title,body){
+  clearTimeout(nhide);
+  document.getElementById('ntit').textContent=title;document.getElementById('nbod').textContent=body;
+  var el=document.getElementById('notif');el.style.display='block';el.style.animation='none';el.offsetHeight;el.style.animation='';
+  nhide=setTimeout(closeN,6000);
+  if(Notification.permission==='granted')new Notification(title,{body:body});
+  else if(Notification.permission!=='denied')Notification.requestPermission();
+}
+function closeN(){document.getElementById('notif').style.display='none'}
+
+function aiR(msg){
+  var q=msg.toLowerCase();var d=gd(today());
+  var tot=d.foods.reduce(function(a,f){return{p:a.p+f.total.p,c:a.c+f.total.c,f:a.f+f.total.f,k:a.k+f.total.k}},{p:0,c:0,f:0,k:0});
+  var t=tdee(S.profile);var p=S.profile;
+  var now=new Date();var ws=new Date(now);ws.setDate(ws.getDate()-((ws.getDay()||7)-1));
+  var wc=0;
+  for(var i=0;i<7;i++){var dd=new Date(ws);dd.setDate(dd.getDate()+i);if(S.days[dd.toISOString().split('T')[0]]&&S.days[dd.toISOString().split('T')[0]].workout)wc++}
+  var gn={bulk:'masă musculară',cut:'slăbit/definire',maintain:'menținere',recomp:'recompoziție'}[p.goal]||p.goal;
+
+  if(q.match(/calorii|kcal|cat am mancat/)){var r=Math.max(0,t.tgt-Math.round(tot.k));return'Azi ai consumat <strong>'+Math.round(tot.k)+' kcal</strong> din targetul de <strong>'+t.tgt+' kcal</strong>. Rămase: <strong>'+r+' kcal</strong>.'+(r>600?' Ai spațiu pentru o masă completă.':r>0?' Eşti aproape de target!':' ✅ Target atins!')}
+  if(q.match(/proteine|protein/)){var rP=Math.max(0,t.protein-tot.p);return'Proteine azi: <strong>'+tot.p.toFixed(1)+'g</strong> din <strong>'+t.protein+'g</strong>. Rămase: <strong>'+rP.toFixed(0)+'g</strong>. '+(rP>50?'Surse bune: piept pui (31g/100g), ton (26g/100g), ouă (13g/100g), brânză de vaci (11g/100g).':'✅ Eşti pe track cu proteinele!')}
+  if(q.match(/masa musculara|bulk|ingras/))return'Pentru <strong>masă musculară</strong>: <strong>'+t.tgt+' kcal/zi</strong> (+300 surplus). Macros: <strong>'+t.protein+'g P / '+t.carbs+'g C / '+t.fat+'g G</strong>. Alimente cheie: piept pui, orez, ovăz, ouă, brânză de vaci. Antrenamente: <strong>'+p.gymDays+'x/săpt</strong>.';
+  if(q.match(/cut|slabit|defin/))return'Pentru <strong>cut/definire</strong>: <strong>'+t.tgt+' kcal/zi</strong> (deficit ~400 kcal). Prioritizează proteinele — <strong>'+t.protein+'g/zi</strong>. Evită carbohidrații rafinați seara. Cardio 2-3x/săpt.';
+  if(q.match(/sala|antrenament|workout/))return'Săptămâna aceasta: <strong>'+wc+'/'+p.gymDays+' antrenamente</strong>. '+(wc>=p.gymDays?'🏆 Obiectiv atins, excelent!':wc>0?'Mai ai '+(p.gymDays-wc)+' antrenament(e). Continuă!':'Niciun antrenament înregistrat săptămâna asta. Hai la sală! 💪');
+  if(q.match(/apa|hidrat/)){var w2=d.water||0,g2=p.waterGoal||8;return'Azi ai băut <strong>'+w2+'/'+g2+' pahare</strong> ('+w2*250+'ml din '+g2*250+'ml). '+(w2>=g2?'✅ Hidratat perfect!':w2>=g2/2?'Bun progres! Mai ai câteva pahare.':'⚠️ Sub jumătate. Bea un pahar acum!')}
+  if(q.match(/creatin|supliment/)){var cr=S.supps.filter(function(s){return s.name.toLowerCase().indexOf('creatin')>=0})[0];if(cr)return'Creatina ta ('+(cr.dose||'5g')+') se ia la <strong>'+cr.time+'</strong>. '+(cr.taken?'✅ Ai marcat-o ca luată azi!':'⏰ Nu ai marcat-o azi — du-te la tab-ul Hidratare > Suplimente.');return'Nu am găsit creatina la suplimentele tale. Adaug-o în tab-ul <strong>Hidratare</strong>!'}
+  if(q.match(/tdee|metabolism|necesar/))return'BMR: <strong>'+t.bmr+' kcal</strong> · TDEE: <strong>'+t.base+' kcal</strong> · Target ('+gn+'): <strong style="color:var(--acc4)">'+t.tgt+' kcal/zi</strong> · Macros: '+t.protein+'g P / '+t.carbs+'g C / '+t.fat+'g G.';
+  if(q.match(/cina|seara|ce mananc/)){var rem2=Math.max(0,t.tgt-Math.round(tot.k)),remP2=Math.max(0,t.protein-tot.p);return rem2<200?'Target aproape atins ('+rem2+' kcal rămase). Cină uşoară: salată cu ton sau iaurt grecesc.':rem2<500?rem2+' kcal rămase. Cină: 150g piept pui + salată. Proteine rămase: '+remP2.toFixed(0)+'g.':'Rămase: <strong>'+rem2+' kcal</strong> şi <strong>'+remP2.toFixed(0)+'g proteine</strong>. Cină ideală: 200g piept pui + 150g orez + legume.'}
+  if(q.match(/pre.*workout|inainte de sala/))return'Pre-workout (1-2h înainte): carbohidrați + proteine moderate. Ex: 100g ovăz + banană + 150ml lapte ≈ 450 kcal, energie susținută.';
+  if(q.match(/post.*workout|dupa sala/))return'Post-workout (30-60 min): 30-40g proteine + carbohidrați rapizi. Ex: shake whey + banană, sau 150g piept pui + 150g orez.';
+  if(q.match(/progres|saptamana|rezumat/))return'📊 Săptămâna aceasta: <strong>'+wc+'/'+p.gymDays+' antrenamente</strong> · Azi: '+Math.round(tot.k)+'/'+t.tgt+' kcal · Apă: '+(d.water||0)+'/'+(p.waterGoal||8)+' pahare. '+(wc>=p.gymDays?'🏆 Săptămână excelentă!':'Continuă să progresezi!');
+  return'Sunt FitAI, asistentul tău de fitness! Poți întreba despre: calorii, proteine, antrenamente, hidratare, creatină, mese pre/post-workout, TDEE sau goal-ul tău de '+gn+'. 💪';
+}
+
+function sc(prefix){
+  var ids={q:['qi','qchat'],n:['ni','nchat']}[prefix];
+  var inp=document.getElementById(ids[0]);var msg=inp.value.trim();if(!msg)return;
+  var chat=document.getElementById(ids[1]);
+  chat.innerHTML+='<div class="cm u">'+msg.replace(/</g,'&lt;')+'</div>';inp.value='';chat.scrollTop=chat.scrollHeight;
+  var reply=aiR(msg);
+  setTimeout(function(){chat.innerHTML+='<div class="cm b">'+reply+'</div>';chat.scrollTop=chat.scrollHeight;},350);
+}
+
+function rDash(){
+  var now=new Date(),h=now.getHours(),p=S.profile;
+  document.getElementById('dg').textContent=(h<12?'Bună dimineața 🌅':h<18?'Bună ziua ☀️':'Bună seara 🌙')+(p.name?', '+p.name:'')+' !';
+  document.getElementById('dd').textContent=now.toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var d=gd(today());
+  var tot=d.foods.reduce(function(a,f){return{p:a.p+f.total.p,c:a.c+f.total.c,f:a.f+f.total.f,k:a.k+f.total.k}},{p:0,c:0,f:0,k:0});
+  var t=tdee(p);
+  var ws=new Date(now);ws.setDate(ws.getDate()-((ws.getDay()||7)-1));
+  var wc=0;var wd=[];
+  for(var i=0;i<7;i++){var dd=new Date(ws);dd.setDate(dd.getDate()+i);var k=dd.toISOString().split('T')[0];var hw=!!(S.days[k]&&S.days[k].workout);if(hw)wc++;wd.push({l:['L','M','Mi','J','V','S','D'][i],h:hw,past:dd<=now})}
+  var pct=function(v){return Math.min(100,Math.round(v))};
+
+  document.getElementById('dstats').innerHTML=
+    '<div class="sbox"><div class="sv" style="color:var(--acc4)">'+Math.round(tot.k)+'</div><div class="sl">Calorii azi / '+t.tgt+'</div><div style="margin-top:5px"><div class="pb"><div class="pf" style="width:'+pct(tot.k/t.tgt*100)+'%;background:var(--acc4)"></div></div></div></div>'+
+    '<div class="sbox"><div class="sv" style="color:#60a5fa">'+tot.p.toFixed(0)+'g</div><div class="sl">Proteine azi / '+t.protein+'g</div><div style="margin-top:5px"><div class="pb"><div class="pf" style="width:'+pct(tot.p/t.protein*100)+'%;background:#60a5fa"></div></div></div></div>'+
+    '<div class="sbox"><div class="sv" style="color:var(--acc3)">'+wc+'<span style="font-size:.95rem;color:var(--text2)">/'+p.gymDays+'</span></div><div class="sl">Antrenamente săpt.</div><div style="margin-top:5px"><div class="pb"><div class="pf" style="width:'+pct(wc/p.gymDays*100)+'%;background:var(--acc3)"></div></div></div></div>';
+
+  document.getElementById('dmac').innerHTML=
+    '<div class="pw"><div class="pl"><span>🔥 Calorii</span><span>'+Math.round(tot.k)+'/'+t.tgt+'</span></div><div class="pb"><div class="pf" style="width:'+pct(tot.k/t.tgt*100)+'%;background:var(--acc4)"></div></div></div>'+
+    '<div class="pw"><div class="pl"><span>💪 Proteine</span><span>'+tot.p.toFixed(0)+'/'+t.protein+'g</span></div><div class="pb"><div class="pf" style="width:'+pct(tot.p/t.protein*100)+'%;background:#60a5fa"></div></div></div>'+
+    '<div class="pw"><div class="pl"><span>🌾 Carbs</span><span>'+tot.c.toFixed(0)+'/'+t.carbs+'g</span></div><div class="pb"><div class="pf" style="width:'+pct(tot.c/t.carbs*100)+'%;background:var(--acc4)"></div></div></div>'+
+    '<div class="pw"><div class="pl"><span>🥑 Grăsimi</span><span>'+tot.f.toFixed(0)+'/'+t.fat+'g</span></div><div class="pb"><div class="pf" style="width:'+pct(tot.f/t.fat*100)+'%;background:var(--acc3)"></div></div></div>'+
+    '<div style="margin-top:9px;font-size:.8rem;color:var(--text2)">Rămase: <strong style="color:var(--acc4)">'+Math.max(0,t.tgt-Math.round(tot.k))+' kcal</strong> · P: <strong style="color:#60a5fa">'+Math.max(0,t.protein-Math.round(tot.p))+'g</strong></div>';
+
+  document.getElementById('dwk').innerHTML=
+    '<div class="cbar">'+wd.map(function(x){return'<div class="cc"><div class="cv" style="color:'+(x.h?'var(--acc3)':'var(--text2)')+'">'+(x.h?'✓':'')+'</div><div class="cb" style="height:'+(x.h?90:x.past?16:3)+'px;background:'+(x.h?'var(--acc3)':x.past?'var(--bg3)':'var(--border)')+'"></div><div class="cl">'+x.l+'</div></div>'}).join('')+'</div>'+
+    '<div style="margin-top:9px;font-size:.8rem;color:var(--text2)">'+(wc>=p.gymDays?'🏆 Obiectiv săptămânal atins!':wc>0?wc+'/'+p.gymDays+' — mai ai '+(p.gymDays-wc)+' antrenament(e)':'Niciun antrenament înregistrat săptămâna aceasta')+'</div>';
+
+  var w=d.water||0,wg=p.waterGoal||8;
+  document.getElementById('dwat').innerHTML=
+    '<div style="text-align:center;margin-bottom:9px"><span style="font-size:1.9rem;font-weight:800;color:var(--acc2)">'+w+'</span><span style="color:var(--text2)"> / '+wg+' pahare</span></div>'+
+    '<div class="pb"><div class="pf" style="width:'+Math.min(100,w/wg*100)+'%;background:var(--acc2)"></div></div>'+
+    '<div style="margin-top:7px;font-size:.8rem;color:var(--text2)">'+w*250+'ml din ~'+Math.round(p.weight*33)+'ml recomandate</div>'+
+    '<button class="btn inf sm mt" onclick="aw();rDash()">+ Pahar</button>';
+
+  var sh=S.supps.map(function(s){return'<div style="display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-bottom:1px solid var(--border)"><span>💊 '+s.name+' <span style="color:var(--text2)">'+(s.dose||'')+'</span></span><span>'+(s.taken?'<span class="badge bg">✓</span>':'<span class="badge by">'+s.time+'</span>')+'</span></div>'}).join('');
+  document.getElementById('drem').innerHTML=
+    '<div style="margin-bottom:9px">'+(S.ron?'<span class="badge bb">● Remindere apă active</span>':'<span class="badge br">Remindere oprite</span>')+'</div>'+
+    (sh||'<p style="font-size:.82rem;color:var(--text2)">Adaugă suplimente în tab-ul Hidratare.</p>')+
+    '<button class="btn gh sm mt" onclick="go('hyd',document.querySelectorAll('.nb')[3])">Gestionează →</button>';
+}
+
+(function init(){
+  var ld=localStorage.getItem('fitai3_day'),td=today();
+  if(ld!==td){S.supps.forEach(function(s){s.taken=false});localStorage.setItem('fitai3_day',td);save()}
+  rDash();
+  if(S.ron){
+    rtimer=setInterval(function(){var d=gd(today()),g=S.profile.waterGoal||8;if((d.water||0)<g)showN('💧 Bea apă!','E timpul pentru un pahar de apă!')},(S.wint||60)*60000);
+    document.getElementById('rbadge').style.display='inline-block';
+  }
+  sched();
+})();
+</script>
+</body>
+</html>
